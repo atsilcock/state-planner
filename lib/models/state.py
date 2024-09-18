@@ -61,10 +61,6 @@ class State:
         CURSOR.execute(sql)
         CONN.commit()
 
-
-#create crud defitions
-# ADD (save), DELETE, ALTER (update)
-
     def save(self):
         sql = """
             INSERT INTO states (name, population, region)
@@ -94,7 +90,53 @@ class State:
         self.id = None 
 
     
+    @classmethod
+    def create(cls, name, population, region):
+        state = cls(name, population, region)
+        state.save()
+        return state
 
+    @classmethod
+    def instance_from_db(cls, row):
+        state = cls.all.get(row[0])
+        if state:
+            state.name = row[1]
+            state.population = row[2]
+            state.region = row[3]
+        else:
+            state = cls(row[1], row[2], row[3])
+            state.id = row[0]
+            cls.all[state.id] = state
+        return state
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT *
+            FROM states
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT *
+            FROM states
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT *
+            FROM states
+            WHERE name is ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
 
 
