@@ -1,6 +1,8 @@
 from __init__ import CURSOR, CONN
 
 class State: 
+
+
     def __init__(self, name, population, region, id=None):
         self.name = name
         self.population = population

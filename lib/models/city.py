@@ -1,8 +1,9 @@
 class City: 
-    def __init__(self, name, city_population, id=None):
+    def __init__(self, name, city_population, state_id, id=None):
         self.name = name
         self.city_population = city_population
         self.id = id
+        self.state_id = state_id
 
 
     @property
