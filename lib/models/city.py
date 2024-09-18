@@ -94,3 +94,54 @@ class City:
         del type(self).all[self.id]
 
         self.id = None
+
+    @classmethod
+    def create(cls, name, city_population, state_id):
+        city = cls(name, city_population, state_id)
+        city.save()
+        return city
+
+    @classmethod
+    def instance_from_db(cls, row):
+        city = cls.all.get(row[0])
+        if city:
+            city.name = row[1]
+            city.city_population = row[2]
+            city.state_id = row[3]
+        else:
+            city = cls(row[1], row[2], row[3])
+            city.id = row[0]
+            cls.all[city.id] = city
+        return city
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT *
+            FROM cities
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT *
+            FROM cities
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        sql = """
+            SELECT *
+            FROM cities
+            WHERE name is ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    def state(self):
+        return State.find_by_id(self.state_id)
