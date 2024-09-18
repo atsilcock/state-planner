@@ -9,29 +9,6 @@ class State:
         self.region = region
         self.id = id
 
-# Table Classes (create table, drop table, alter table, delete table)
-
-    @classmethod
-    def create_table(cls):
-        sql = """
-            CREATE TABLE IF NOT EXISTS states (
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            population INT, 
-            region TXT)
-        """
-        CURSOR.execute(sql)
-        CONN.commit()
-
-    @classmethod
-    def drop_table(cls):
-        sql= "DROP TABLE IF NOT EXISTS states"
-
-        CURSOR.execute(sql)
-        CONN.commit()
-
-
-# Getter & Setter Function         
 
     @property
     def name(self):
@@ -40,9 +17,9 @@ class State:
     @name.setter
     def name(self, name):
         if not isinstance(name, str):
-            raise Exception("Name must be a string")
-        if  not 1<= len(name) <= 15:
-            raise Exception("Length must be between 1 and 15 characters")
+            raise ValueError("Name must be a string")
+        if not 1 <= len(name) <= 15:
+            raise ValueError("Length must be between 1 and 15 characters")
         self._name = name
 
     @property
