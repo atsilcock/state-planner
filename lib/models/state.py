@@ -29,7 +29,7 @@ class State:
     @population.setter
     def population(self, population):
         if not isinstance(population,int): 
-            raise Exception("Population must be an Integer")
+            raise ValueError("Population must be an Integer")
         self._population = population
 
     @property
@@ -39,8 +39,27 @@ class State:
     @region.setter
     def region(self, region):
         if not isinstance(region, str):
-            raise Exception("Region must be a string")
+            raise ValueError("Region must be a string")
         self._region = region
+
+
+    @classmethod
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS states (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            population INT, 
+            region TEXT)
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = "DROP TABLE IF EXISTS states"
+        CURSOR.execute(sql)
+        CONN.commit()
 
 
 #create crud defitions
