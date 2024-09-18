@@ -62,3 +62,35 @@ class City:
         """
         CURSOR.execute(sql)
         CONN.commit()
+
+    def save(self):
+        sql = """
+            INSERT INTO cities (name, city_population, state_id)
+            VALUES (?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.city_population, self.state_id))
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
+    def update(self):
+        sql = """
+            UPDATE cities
+            SET name = ?, city_population = ?, state_id = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.city_population, self.state_id, self.id))
+        CONN.commit()
+
+    def delete(self):
+        sql = """
+            DELETE FROM cities
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        del type(self).all[self.id]
+
+        self.id = None
