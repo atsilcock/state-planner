@@ -75,21 +75,25 @@ class State:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
 
     
-    def delete(self): 
-        sql = "DELETE FROM states WHERE id = ?" 
-
-        CURSOR.execute(sql, (self.id))
-        CONN.commit()
-
-        self.id = None 
-
     def update(self):
         sql= "UPDATE states SET name = ?, population =?, region = ? WHERE id = ?"
 
         CURSOR.execute(sql, (self.name, self.population, self.region, self.id))
         CONN.commit()
+
+    def delete(self): 
+        sql = "DELETE FROM states WHERE id = ?" 
+
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+
+        del type(self).all[self.id]
+        self.id = None 
+
+    
 
 
 
