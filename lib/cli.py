@@ -8,6 +8,7 @@ from helpers import (
 
 def main():
     while True:
+        print("**************************")
         menu()
         choice = input("> ")
         if choice == "0":
@@ -16,12 +17,16 @@ def main():
             helper_1()
         else:
             print("Invalid choice")
+            print("**************************")
 
 
 def menu():
     print("Please select an option:")
+    print("                         ")
     print("0. Exit the program")
+    print("                         ")
     print("1. Some useful function")
+    print("                         ")
 
 
 if __name__ == "__main__":

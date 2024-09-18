@@ -1,7 +1,7 @@
 from __init__ import CURSOR, CONN
 
 class State: 
-
+    all = {}
 
     def __init__(self, name, population, region, id=None):
         self.name = name
@@ -133,7 +133,7 @@ class State:
         sql = """
             SELECT *
             FROM states
-            WHERE name is ?
+            WHERE name = ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None

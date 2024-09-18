@@ -2,6 +2,8 @@ from __init__ import CURSOR, CONN
 from state import State
 
 class City: 
+    all = {}
+
     def __init__(self, name, city_population, state_id, id=None):
         self.name = name
         self.city_population = city_population
@@ -92,7 +94,6 @@ class City:
         CONN.commit()
 
         del type(self).all[self.id]
-
         self.id = None
 
     @classmethod
@@ -138,7 +139,7 @@ class City:
         sql = """
             SELECT *
             FROM cities
-            WHERE name is ?
+            WHERE name = ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
