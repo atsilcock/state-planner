@@ -42,3 +42,23 @@ class City:
         else:
             raise ValueError("state_id must reference a valid state in the database")
             
+    @classmethod
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS cities (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            city_population INTEGER,
+            state_id INTEGER,
+            FOREIGN KEY (state_id) REFERENCES states(id))
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS cities;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
