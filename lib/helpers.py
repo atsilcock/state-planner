@@ -1,6 +1,6 @@
-from models.state import State
+from state import State
 
-def display_state():
+def display_states():
     states = State.get_all()
     if states:
         print("All States: ")

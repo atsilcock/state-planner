@@ -1,33 +1,24 @@
-# lib/cli.py
-
 from helpers import (
     exit_program,
-    helper_1
+    display_states
 )
-
 
 def main():
     while True:
-        print("**************************")
-        menu()
-        choice = input("> ")
-        if choice == "0":
+        options()
+        choice = ">"
+        if choice == "1":
+            display_states()
+        elif choice == "2":
             exit_program()
-        elif choice == "1":
-            helper_1()
         else:
-            print("Invalid choice")
-            print("**************************")
+            print("You have made an incorrect choice")
+    
 
-
-def menu():
-    print("Please select an option:")
-    print("                         ")
-    print("0. Exit the program")
-    print("                         ")
-    print("1. Some useful function")
-    print("                         ")
-
+def options():
+    print("SELECT AND OPTION")
+    print("1. Select the State")
+    print("2. Exit the Prorgram")
 
 if __name__ == "__main__":
     main()
