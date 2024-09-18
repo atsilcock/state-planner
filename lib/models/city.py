@@ -1,3 +1,6 @@
+from __init__ import CURSOR, CONN
+from state import State
+
 class City: 
     def __init__(self, name, city_population, state_id, id=None):
         self.name = name
