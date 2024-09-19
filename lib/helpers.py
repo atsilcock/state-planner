@@ -49,8 +49,6 @@ def delete_state_by_number(states, number):
     state_to_delete.delete()
     print(f"State '{state_to_delete.name}' has been deleted.")
 
-
-
 def update_state(id, name, population, region):
     state = find_state(id)
     if state:
@@ -67,8 +65,6 @@ def find_state(id):
         if state.id == id:
             return state
     return None
-
-
 
 #Cities 
 

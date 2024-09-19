@@ -37,21 +37,21 @@ def select_state():
         elif user_action == "add":
             adding_a_state()
             name = input("Enter the state name: ")
-            population = input("Enter the population: ")
-            try:
-                population = int(population)
-            except ValueError:
-                print("You must type an number ")
-                continue
+            while True:
+                population_input = input("Enter the population: ")
+                try:
+                    population = int(population_input)
+                    break
+                except ValueError:
+                    print("Error: Population must be an integer. Please try again.")
+
             region = input("Enter the region: ")
-            new_state = add_city(name, population, region) 
-        
+            new_state = add_state(name, population, region) 
             print(f"You have now added the state {new_state.name} successfully ")
         
         elif user_action == "delete":
-            states = get_states()  # Get the list of all states
-            list_states(states)  # Display the states with numbering
-            
+            states = get_states()
+            list_states(states)
             delete_name_by_number = input("Enter the number of the state you would like to delete: ")
             
             if delete_name_by_number.isdigit():
@@ -64,11 +64,30 @@ def select_state():
                 print("Please enter a valid number.")
 
         elif user_action == "update":
+            state = get_states()
+            list_states(states)
             state_to_be_updated = input("Enter the number that you would like to update")
-            name = input("Enter a name: ")
-            population = input("Enter population: ")
-            region = input("Enter region: ")
-            update_state(int(state_to_be_updated), name, int(population), region)
+            
+            if state_to_be_updated.isdigit():
+                state_id = int(state_to_be_updated)
+                if 1<= state_id <= len(states):
+                    name = input("Enter a name: ")
+                    while True:
+                        population = input("Enter the population: ")
+
+                        if population.isdigit():  # Check if the input is a valid integer
+                            population = int(population)  # Convert to an integer
+                            break  # Exit the loop once we have valid input
+                        else:
+                            print("Error: Population must be an integer. Please try again.")
+
+                    region = input("Enter region: ")
+                    update_state(state_id, name, population, region)
+                    print(f"State {name} has been sucessfully updated")
+                else:
+                    print("invalid state number")
+            else:
+                print("Please enter a valid number")
 
         elif user_action.isdigit(): #view state details
             state = find_state(int(user_action))
@@ -111,28 +130,31 @@ def select_city(state):
             print(f"You have now added the state {new_city.name} successfully ")
     
         elif user_action == "delete":
-            cities = get_cities  # Fetch all cities from the database
-            list_cities(cities)  # Display the cities with numbering
-
+            cities = find_cities_by_state(state.id)
+            list_cities(cities)  
             delete_city_by_number_input = input("Enter the number of the city you would like to delete: ")
 
             if delete_city_by_number_input.isdigit():
                 delete_number = int(delete_city_by_number_input)
-                if 1 <= delete_number <= len(cities):
-                    delete_city_by_number(cities, delete_number)  # Delete the city based on the number
-                else:
-                    print("Invalid number, please try again.")
+            if 1 <= delete_number <= len(cities):
+                city_to_delete = cities[delete_number - 1]  # Get the city object to delete
+                delete_city_by_number(cities, delete_number)  # Delete the city based on its ID
+                print(f"City {city_to_delete.name} has been successfully deleted.")
             else:
-                print("Please enter a valid number.")
+                print("Invalid number, please try again.")
+        
+        elif user_action == "update":
+            pass
 
-            
-
+        elif user_action == "back":
+            print("Go back")
+            return
 
         
-    
+        else:
+            print("Please enter a valid number.")
 
-
-
+            
 def select_state_menu():
 
     print("")
