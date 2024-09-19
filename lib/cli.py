@@ -1,15 +1,17 @@
 from helpers import (
     exit_program,
     get_states,
+    get_cities,
     add_state,
     add_city,
     list_states, 
     list_cities, 
     display_state_details, 
-    delete_city, 
+    delete_city_by_number, 
     find_cities_by_state,
-    delete_state, 
+    delete_state_by_number, 
     update_state,
+    update_city,
     find_state,
     stars
 )
@@ -47,11 +49,22 @@ def select_state():
             print(f"You have now added the state {new_state.name} successfully ")
         
         elif user_action == "delete":
-            delete_name_by_number = input("Enter the number you would like to delete: ")
-            delete_state(int(delete_name_by_number))
+            states = get_states()  # Get the list of all states
+            list_states(states)  # Display the states with numbering
+            
+            delete_name_by_number = input("Enter the number of the state you would like to delete: ")
+            
+            if delete_name_by_number.isdigit():
+                delete_number = int(delete_name_by_number)
+                if 1 <= delete_number <= len(states):
+                    delete_state_by_number(states, delete_number)  # Delete the state based on the number
+                else:
+                    print("Invalid number, please try again.")
+            else:
+                print("Please enter a valid number.")
 
         elif user_action == "update":
-            state_to_be_updated = input("Enter the number that you would ike to update")
+            state_to_be_updated = input("Enter the number that you would like to update")
             name = input("Enter a name: ")
             population = input("Enter population: ")
             region = input("Enter region: ")
@@ -98,8 +111,20 @@ def select_city(state):
             print(f"You have now added the state {new_city.name} successfully ")
     
         elif user_action == "delete":
-            delete_city_by_number = input("Enter the number you would like to delete: ")
-            delete_city(int(delete_city_by_number))
+            cities = get_cities  # Fetch all cities from the database
+            list_cities(cities)  # Display the cities with numbering
+
+            delete_city_by_number_input = input("Enter the number of the city you would like to delete: ")
+
+            if delete_city_by_number_input.isdigit():
+                delete_number = int(delete_city_by_number_input)
+                if 1 <= delete_number <= len(cities):
+                    delete_city_by_number(cities, delete_number)  # Delete the city based on the number
+                else:
+                    print("Invalid number, please try again.")
+            else:
+                print("Please enter a valid number.")
+
             
 
 

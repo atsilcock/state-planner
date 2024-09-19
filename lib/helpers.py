@@ -8,21 +8,16 @@ def exit_program():
     print("")
     exit()
 
+#States
+
 def get_states():
     return State.get_all()
 
-def get_cities():
-    return City.get_all()
 
 def add_state(name, population, region):
     new_state = State(name, population, region)
     new_state.save()
     return new_state
-
-def add_city(name, city_population, state_id):
-    new_city = City(name, city_population, state_id)
-    new_city.save()
-    return new_city
 
 
 def list_states(states):
@@ -39,30 +34,22 @@ def display_states():
 def display_state_details():
     return City.get_all
 
-def list_cities(cities):
-    for i, city in enumerate(cities, start=1):
-        print(f"{i}. {city.name} | Population {city.city_population}")
+
+def get_cities():
+    return City.get_all()
 
 
-def delete_city(state_id):
-    city = find_cities(state_id)
-    if city:
-        city.delete()
-        print(f"City with id {id} has been deleted.")
-    else:
-        stars()
-        print("No City matches the number that you have choosen. Please try again.")
-        stars()
+def add_city(name, city_population, state_id):
+    new_city = City(name, city_population, state_id)
+    new_city.save()
+    return new_city
 
-def delete_state(id):
-    state = find_state(id)
-    if state:   
-        state.delete()
-        print(f"State with id {id} has been deleted.")
-    else:
-        stars()
-        print("No state matches the number that you have choosen. Please try again.")
-        stars()
+def delete_state_by_number(states, number):
+    state_to_delete = states[number - 1]
+    state_to_delete.delete()
+    print(f"State '{state_to_delete.name}' has been deleted.")
+
+
 
 def update_state(id, name, population, region):
     state = find_state(id)
@@ -81,7 +68,29 @@ def find_state(id):
             return state
     return None
 
-def find_cities(state_id):
+
+
+#Cities 
+
+def list_cities(cities):
+    for i, city in enumerate(cities, start=1):
+        print(f"{i}. {city.name} | Population {city.city_population}")
+
+def delete_city_by_number(cities, number):
+    city_to_delete = cities[number - 1]
+    city_to_delete.delete()
+    print(f"City '{city_to_delete.name}' has been deleted.")
+           
+
+def update_city(id, name, population):
+    city = find_city(id)
+    if city:
+        city.name = name
+        city.city_population = population
+        city.update()
+
+
+def find_city(state_id):
     cities = get_cities()
     for city in cities:
         if city.state_id == state_id:

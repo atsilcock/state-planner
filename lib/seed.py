@@ -15,4 +15,10 @@ def seed_database():
     State.create("Florida", 21538187, "Southeast")
     State.create("New York", 20201249, "Northeast")
 
+# Add cities for testing
+    City.create("Los Angeles", 331455, 1)
+    City.create("Houston", 201913, 2)
+    City.create("Miami", 320394, 3)
+    City.create("New York", 3400000000, 4)
+
 seed_database()

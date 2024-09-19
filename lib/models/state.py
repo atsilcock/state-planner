@@ -61,6 +61,7 @@ class State:
         CURSOR.execute(sql)
         CONN.commit()
 
+
     def save(self):
         sql = """
             INSERT INTO states (name, population, region)
