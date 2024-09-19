@@ -1,7 +1,8 @@
 from helpers import (
     exit_program,
     get_states,
-    add_state, 
+    add_state,
+    add_city,
     list_states, 
     list_cities, 
     display_state_details, 
@@ -41,13 +42,13 @@ def select_state():
                 print("You must type an number ")
                 continue
             region = input("Enter the region: ")
-            new_state = add_state(name, population, region) 
+            new_state = add_city(name, population, region) 
         
             print(f"You have now added the state {new_state.name} successfully ")
         
         elif user_action == "delete":
-            delete_name = input("Enter the number you would like to delete: ")
-            delete_state(int(delete_name))
+            delete_name_by_number = input("Enter the number you would like to delete: ")
+            delete_state(int(delete_name_by_number))
 
         elif user_action == "update":
             state_to_be_updated = input("Enter the number that you would ike to update")
@@ -73,16 +74,37 @@ def select_city(state):
     while True:
         cities = find_cities_by_state(state.id)  # Use the helper function
         print(f"\nCities in {state.name}:")
+        print("")
         if cities:
             list_cities(cities)  # Display the cities
         else:
             print("No cities found for this state.")
-
         user_action = city_menu()
-
+       
         if user_action == 'e':
-            break  # Exit the city menu
+            break
+        
+        elif user_action == "add":
+            adding_a_city()
+            name = input("Enter the city name: ")
+            population = input("Enter the population: ")
+            try:
+                population = int(population)
+            except ValueError:
+                print("Error: You must type a number! ")
+                continue
 
+            new_city = add_city(name, population, state.id) 
+            print(f"You have now added the state {new_city.name} successfully ")
+    
+        elif user_action == "delete":
+            delete_city_by_number = input("Enter the number you would like to delete: ")
+            delete_city(int(delete_city_by_number))
+            
+
+
+        
+    
 
 
 
@@ -91,9 +113,9 @@ def select_state_menu():
     print("")
     stars()
     print("Type # in List to view state details")
-    print("Type Add to add a new state")
-    print("Type Delete to delete one of the states")
-    print("Type Update to update state")
+    print("Type 'Add' to add a new state")
+    print("Type 'Delete' to delete one of the states")
+    print("Type 'Update' to update state")
     print("Type e to Exit")
     stars()
 
@@ -105,11 +127,18 @@ def adding_a_state():
     print("\nEnter the details below to add a new State: ")
     print("")
 
+def adding_a_city():
+    print("")
+    stars()
+    print("\nEnter the details below to add a new City: ")
+    print("")
+
 def city_menu():
     print("\nCity Options")
     stars()
+    print("Type 'Update' to update a city")
     print("Type 'Add' to add a city.")
-    print("Type 'View' to view all cities for this state.")
+    print("Type 'Delete' to delete a city")
     print("Type 'Back' to go back to the previous menu.")
     stars()
     return input("Your choice: ").lower()

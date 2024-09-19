@@ -11,10 +11,18 @@ def exit_program():
 def get_states():
     return State.get_all()
 
+def get_cities():
+    return City.get_all()
+
 def add_state(name, population, region):
     new_state = State(name, population, region)
     new_state.save()
     return new_state
+
+def add_city(name, city_population, state_id):
+    new_city = City(name, city_population, state_id)
+    new_city.save()
+    return new_city
 
 
 def list_states(states):
@@ -36,8 +44,15 @@ def list_cities(cities):
         print(f"{i}. {city.name} | Population {city.city_population}")
 
 
-def delete_city():
-    pass
+def delete_city(state_id):
+    city = find_cities(state_id)
+    if city:
+        city.delete()
+        print(f"City with id {id} has been deleted.")
+    else:
+        stars()
+        print("No City matches the number that you have choosen. Please try again.")
+        stars()
 
 def delete_state(id):
     state = find_state(id)
@@ -64,6 +79,13 @@ def find_state(id):
     for state in states:
         if state.id == id:
             return state
+    return None
+
+def find_cities(state_id):
+    cities = get_cities()
+    for city in cities:
+        if city.state_id == state_id:
+            return city
     return None
 
 def find_cities_by_state(state_id):
