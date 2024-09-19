@@ -1,5 +1,5 @@
-from __init__ import CURSOR, CONN
-from state import State
+from models.__init__ import CURSOR, CONN
+from models.state import State
 
 class City: 
     all = {}
