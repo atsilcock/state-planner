@@ -7,7 +7,8 @@ from helpers import (
     display_state_details, 
     delete_city, 
     delete_state, 
-    update_state
+    update_state,
+    find_state
 )
 
 def main():
@@ -43,22 +44,23 @@ def select_state():
         
         elif user_action == "delete":
             delete_name = input("Enter the number you would like to delete: ")
-
-            if delete_name.isdigit() and 1 <= len(delete_name) <= len(states):
-                state_to_delete = states[int(delete_name) -1]
-                state_to_delete.delete()
-                print("")
-                print(f"The State of {state_to_delete.name} has been deleted!")
-                print("")
+            delete_state(int(delete_name))
 
         elif user_action == "update":
-            state_to_update = 
+            state_to_be_updated = input("Enter the number that you would ike to update")
+            name = input("Enter a name: ")
+            population = input("Enter population")
+            region = input("Enter region: ")
+            update_state(int(state_to_be_updated), name, int(population), region)
 
-        elif user_action.isdigit() and 1 <= int(user_action) <= len(states):
-            selected_state = states[int(user_action) -1]
-            print(f"Selected State: {select_state.name} | Population: {select_state.population} | Region: {select_state.region}")
-            
-            
+        elif user_action.isdigit():
+            state = find_state(int(user_action))
+            if state:
+                # display state and cities
+                print('state found')
+            else:
+                print("Entered number does not match a state.")
+
         else:
             print("Invalid choice, please try again.")
 
@@ -106,8 +108,7 @@ def select_city():
             
         else:
             print("Invalid choice, please try again.")
-     
-        
+          
 def select_state_menu():
 
     print("")
@@ -139,8 +140,6 @@ def city_menu():
 def intro_message():
     print("\nHello & Welcome to Your long awaited vacation!")
     print ("\n")
-
-
 
 if __name__ == "__main__":
     main()

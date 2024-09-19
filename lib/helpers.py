@@ -40,16 +40,31 @@ def delete_city():
     pass
 
 def delete_state(id):
+    state = find_state(id)
+    if state:   
+        state.delete()
+        print(f"State with id {id} has been deleted.")
+    else:
+        print("")
+        print("No state matches id")
+
+def update_state(id, name, population, region):
+    state = find_state(id)
+    if state:
+        state.name = name
+        state.population = population
+        state.region = region
+        state.update()
+    else:
+        print("State was not found")
+
+def find_state(id):
     states = get_states()
     for i, state in enumerate(states):
         if state.id == id:
-            state.delete()
-            print(f"State with id {id} has been deleted.")
-            return
-    print(f"State with id {id} not found.")
+            return state
+    return None
 
 
-def update_state():
-    return State.update()
 
 
