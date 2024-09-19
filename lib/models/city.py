@@ -143,6 +143,16 @@ class City:
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
+    @classmethod
+    
+    def find_by_state(cls, state_id):
+        sql = """
+            SELECT *
+            FROM cities
+            WHERE state_id = ?
+        """
+        rows = CURSOR.execute(sql, (state_id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+    
     def state(self):
         return State.find_by_id(self.state_id)

@@ -32,8 +32,8 @@ def display_state_details():
     return City.get_all
 
 def list_cities(cities):
-    for i, in enumerate(cities, start =1):
-        print(f"{i}. {cities.name} | Population {cities.population}")
+    for i, city in enumerate(cities, start=1):
+        print(f"{i}. {city.name} | Population {city.city_population}")
 
 
 def delete_city():
@@ -45,8 +45,9 @@ def delete_state(id):
         state.delete()
         print(f"State with id {id} has been deleted.")
     else:
-        print("")
-        print("No state matches id")
+        stars()
+        print("No state matches the number that you have choosen. Please try again.")
+        stars()
 
 def update_state(id, name, population, region):
     state = find_state(id)
@@ -60,11 +61,14 @@ def update_state(id, name, population, region):
 
 def find_state(id):
     states = get_states()
-    for i, state in enumerate(states):
+    for state in states:
         if state.id == id:
             return state
     return None
 
+def find_cities_by_state(state_id):
+    return City.find_by_state(state_id)
 
 
-
+def stars():
+    print ("***********************")
