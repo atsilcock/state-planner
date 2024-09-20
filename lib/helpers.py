@@ -1,129 +1,37 @@
 from models.state import State
 from models.city import City
 
-
-def exit_program():
-    print("")
-    print("We can't wait for you to plan your next vacation!")
-    print("")
-    exit()
-
-#States
-
+# State operations
 def get_states():
     return State.get_all()
 
+def find_state_by_name(name):
+    return State.find_by_name(name)
 
 def add_state(name, population, region):
-    new_state = State(name, population, region)
-    new_state.save()
-    return new_state
+    state = State(name, population, region)
+    state.save()
 
+def delete_state(name):
+    state = find_state_by_name(name)
+    if state:
+        state.delete()
+        print(f"State '{state.name}' deleted successfully.")
+    else:
+        print(f"State '{name}' not found.")
 
-def list_states(states):
-    for i, state in enumerate(states, start=1):
-        print(f"{i}. {state.name} | Population: {state.population} | Region: {state.region} ")
+def update_state(state, name, population, region):
+    state.name = name
+    state.population = population
+    state.region = region
+    state.update()
 
-def display_states():
+def view_all_states():
     states = get_states()
     if states:
-        list_states(states)
+        for i, state in enumerate(states, start=1):
+            print(f"{i}. {state.name} | Population: {state.population} | Region: {state.region}")
     else:
-        print("No states available.")
-
-def display_state_details(state):
-    cities = find_cities_by_state(state.id) 
-    print(f"State Name: {state.name}")
-    for i, city in enumerate(cities, start = 1):
-        print(f"{i}. {city.name} (Population: {city.city_population})")
-
-def get_cities():
-    return City.get_all()
+        print("No states found.")
 
 
-def add_city(name, city_population, state_id):
-    new_city = City(name, city_population, state_id)
-    new_city.save()
-    return new_city
-
-def delete_state_by_number(states, number):
-    state_to_delete = states[number - 1]
-    state_to_delete.delete()
-    print(f"State '{state_to_delete.name}' has been deleted.")
-
-def update_state(id, name, population, region):
-    state = find_state(id)
-    if state:
-        state.name = name
-        state.population = population
-        state.region = region
-        state.update()
-    else:
-        print("State was not found")
-
-
-def find_state(name):
-    states = get_states()
-    for state in states:
-        if state.name.lower() == name.lower():  # Case-insensitive match
-            return state
-    return None
-
-#Cities 
-
-def list_cities(cities):
-    for i, city in enumerate(cities, start=1):
-        print(f"{i}. {city.name} | Population {city.city_population}")
-
-def delete_city_by_number(cities, number):
-    city_to_delete = cities[number - 1]
-    city_to_delete.delete()
-    print(f"City '{city_to_delete.name}' has been deleted.")
-
-def update_city_by_name(cities, id, name, population):
-    city_to_update = next((city for city in cities if city.id == id), None)
-    
-    if city_to_update:
-        city_to_update.name = name
-        city_to_update.city_population = population
-        city_to_update.update()  # Call the update method on the city object
-        print(f"City '{city_to_update.name}' has been updated.")
-    else:
-        print("City not found.")
-
-def update_state_by_name(states, name, population):
-    for state in states:
-        if state.name.lower() == name.lower(): 
-            updated_state = state
-            break
-
-    if updated_state:
-        updated_state.population = population
-        updated_state.update() #updating the database in our system
-        print(f"State '{updated_state.name}' has been updated.")
-        return updated_state 
-    return None           
-
-def update_city(id, name, population):
-    city = find_city(id)
-    if city:
-        city.name = name
-        city.city_population = population
-        city.update()
-    else:
-        print("City was not found")
-
-
-def find_city(state_id):
-    cities = get_cities()
-    for city in cities:
-        if city.state_id == state_id:
-            return city
-    return None
-
-def find_cities_by_state(state_id):
-    return City.find_by_state(state_id)
-
-
-def stars():
-    print ("***********************")
