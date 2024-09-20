@@ -38,6 +38,7 @@ def view_all_states():
 def get_cities_by_state(state_id):
     return City.find_by_state(state_id)
 
+
 def add_city(name, population, state_id):
     city = City(name, population, state_id)
     city.save()

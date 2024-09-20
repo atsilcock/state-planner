@@ -104,7 +104,14 @@ def handle_delete_city(state):
 
 def handle_update_city(state):
     name = input("Enter the name of the city to update: ")
-    city = next((c for c in get_cities_by_state(state.id) if c.name.lower() == name.lower()), None)
+    cities = get_cities_by_state(state.id)
+    
+    city = None
+    for c in cities:
+        if c.name.lower() == name.lower():
+            city = c
+            break
+
     if city:
         new_name = input("Enter new city name: ")
         new_population = int(input("Enter new population: "))
