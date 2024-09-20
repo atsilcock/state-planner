@@ -1,150 +1,170 @@
-from helpers import (
-    view_all_states, 
-    add_state, 
-    delete_state, 
-    update_state, 
-    find_state_by_name, 
-    get_cities_by_state, 
-    add_city, 
-    delete_city, 
-    update_city
-)
+from models.state import State
+from models.city import City
 
-def main():
+
+
+def main(): 
     while True:
+        print("")
+        view_all_states()
+        print("")
         main_menu()
-        
-        choice = input("Enter your choice: ")
-        
-        if choice == '1':
-            view_all_states()
-        elif choice == '2':
-            add_state()
-        elif choice == '3':
-            delete_state()
-        elif choice == '4':
-            to_update_state()
-        elif choice == '5':
-            handle_select_state_by_name()
-        elif choice == '6':
-            print("Exiting program...")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+        try: 
+            print("")
+            choice = input("Enter your choice: ")
+            print("")
+
+            if choice == "1":
+                view_all_states()
+            elif choice == "2":
+                add_a_state("name", "population", "region")
+            elif choice == "3":
+                delete_a_state("name")
+            elif choice == "4":
+                update_a_state("name", "region", "population")
+            elif choice == "5":
+                get_cities_by_state("state_id")
+            else:
+                if choice == "e":
+                    exit_program()
+                    break
+        except ValueError:
+            print("Invalid input. Please try again.")
 
 
-def add_state():
-    name = input("Enter state name: ")
-    population = int(input("Enter population: "))
-    region = input("Enter region: ")
-    add_state(name, population, region)
-    print(f"State '{name}' added successfully.")
 
-def delete_state():
-    name = input("Enter the name of the state to delete: ")
-    delete_state(name)
+def view_all_states():
+    all_states = State.get_all()
+    for i, state in enumerate(all_states, start=1):
+        print(f"{i}. {state.name} | Population {state.population} | Region {state.region}")
 
-def to_update_state():
-    name = input("Enter the name of the state to update: ")
-    state = find_state_by_name(name)
-    if state:
-        new_name = input("Enter new state name: ")
-        new_population = int(input("Enter new population: "))
-        new_region = input("Enter new region: ")
-        update_state(state, new_name, new_population, new_region)
-        print(f"State '{new_name}' updated successfully.")
-    else:
-        print(f"State '{name}' not found.")
+def add_a_state(name, population, region):
 
-def handle_select_state_by_name():
-    name = input("Enter the name of the state to select: ")
-    state = find_state_by_name(name)
-    if state:
-        manage_cities(state)
-    else:
-        print(f"State '{name}' not found.")
-
-def manage_cities(state):
-    city_menu( )
+    name = input("Please enter a name: ")
+    region = input ("please enter a region: ")
     
     while True: 
-        print(f"\n--- What would you like to do for {state.name}? ---")
-        choice = input("Enter your choice: ")
-        
-        if choice == '1':
-            view_all_cities(state)
-        elif choice == '2':
-            handle_add_city(state)
-        elif choice == '3':
-            handle_delete_city(state)
-        elif choice == '4':
-            handle_update_city(state)
-        elif choice == '5':
+        try: 
+            population = int(input("Please enter the population"))
             break
-        else:
-            print("Invalid choice. Please try again.")
-
-def view_all_cities(state):
-    cities = get_cities_by_state(state.id)
-    if cities:
-        for i, city in enumerate(cities, start=1):
-            print(f"{i}. {city.name} | Population: {city.city_population}")
-    else:
-        print(f"No cities found for {state.name}.")
-
-def handle_add_city(state):
-    name = input("Enter city name: ")
-    population = int(input("Enter population: "))
-    add_city(name, population, state.id)
-    print(f"City '{name}' added to {state.name} successfully.")
-
-def handle_delete_city(state):
-    name = input("Enter the name of the city to delete: ")
-    delete_city(state.id, name)
-
-def handle_update_city(state):
-    name = input("Enter the name of the city to update: ")
-    cities = get_cities_by_state(state.id)
+        except ValueError:
+            print("Population must be an integer")
+    print("You have succsefully added the population")
     
-    city = None
-    for c in cities:
-        if c.name.lower() == name.lower():
-            city = c
-            break
-
-    if city:
-        new_name = input("Enter new city name: ")
-        new_population = int(input("Enter new population: "))
-        update_city(city, new_name, new_population)
-        print(f"City '{new_name}' updated successfully.")
+    if isinstance(name, str):
+        print("name is a string")
     else:
-        print(f"City '{name}' not found.")
+        print("not a string")
 
+    if isinstance(region, str):
+        print("region is a string")
+    else:
+        print("region is not a string")
+    
+    state_instance = State(name, population, region)
+    state_instance.save()
+    print(f"State {name} has now beend saved")
+
+def delete_a_state(name):
+    print("")
+    all_states = State.get_all()
+    view_all_states()
+    print()
+
+    try:
+        delete_state = int(input("Please enter the state # that you would like to delete: "))
+        print(f"You have entered {name}")
+    except ValueError: 
+        print("Invalid selection. Please try again.")
+
+    state_by_name = all_states[delete_state -1]
+
+
+    if state_by_name:
+        state_by_name.delete()
+        print(f"The {name} has been deleted")
+        
+    else:
+        print("State not found")
+
+def update_a_state(name, region, population):
+    all_states = State.get_all()
+    view_all_states()
+    
+    try:
+        print("")
+        update_state = int(input("Which state would you like to Update?: "))
+        print("")
+        print(f"Follow Directions: ")
+        print("")
+    except ValueError:
+        ("Try Again")
+
+    selected_state = all_states[update_state - 1]
+
+    if selected_state:
+        
+        name = input(f"Provide updated name: ")
+        if name.isalpha():
+            print("You have updated the name")
+        else:
+            print("")
+            print("Invalid name. Please try again.")
+            print("")
+            return update_a_state(name,region, population)
+            print("")
+
+        
+        region = input(f"Please enter the new region: ")
+        if region.isalpha():
+            print("You have updated the region")
+        else:
+            print("")
+            print("Invalid region name. Please try again.")
+            print("")
+            return update_a_state(name,region, population)
+        print("")
+
+        try:
+            population = int(input("Please enter the new population: "))
+        except ValueError:
+            print("Population must be a number")
+            return
+
+        selected_state.name = name
+        selected_state.region = region
+        selected_state.population = population
+        selected_state.update()
+
+    else:
+        print("try again ")
+
+def get_cities_by_state(state_id):
+    all_cities =  State.get_all()
+    view_all_states()
+    
+    try:
+    # write code where the user is choosing on of the available states
+        select_state_to_view_cities = int(input("Choose the state which you would like to view the cities for: "))
+        all_cities[select_state_to_view_cities -1]
+    
+
+
+def exit_program():
+    print("You are now leaving - Goodbye!")
 
 def main_menu():
-    print("\n------ State Planner -------")
-    print("Welcome to your State Planner!")
-    print("")
     stars()
-    print("")
-    print("1. View All States")
-    print("2. Add State")
-    print("3. Delete State")
-    print("4. Update State")
-    print("5. Select State by Name")
-    print("6. Exit")
-    print()
-    stars()
+    print("1. View all states")
+    print("2. Add a state")
+    print("3. Delete a state")
+    print("4. Update a state")
+    print("5. Select State to view it's cities")
 
-def city_menu():
-    print("1. View All Cities")
-    print("2. Add City")
-    print("3. Delete City")
-    print("4. Update City")
-    print("5. Go Back")
+
 
 def stars():
-    print("*********************")
+    print("******************")
 
 if __name__ == "__main__":
     main()
