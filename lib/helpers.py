@@ -34,14 +34,8 @@ def display_states():
 def display_state_details(state):
     cities = find_cities_by_state(state.id) 
     print(f"State Name: {state.name}")
-    if cities:
-        for city in cities:
-            print(f"- {city.name} (Population: {city.city_population})")
-    else:
-        print("No cities available for this state.")
-    
-    print("***********************")
-
+    for i, city in enumerate(cities, start = 1):
+        print(f"{i}. {city.name} (Population: {city.city_population})")
 
 def get_cities():
     return City.get_all()

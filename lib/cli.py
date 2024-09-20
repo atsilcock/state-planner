@@ -114,33 +114,49 @@ def select_city(state):
                 except ValueError:
                     print("Error: Population must be an integer. Please try again.")
 
-            new_city = add_city(state.name, name, population)
+            new_city = add_city(name, population, state.id)
             print(f"You have now added the city {new_city.name} successfully ")
 
         elif user_action == "update":
-            city_name_to_be_updated = input("Enter the name of the city that needs to be updated: ")
-            city_to_update = next((city for city in cities if city.name.lower() == city_name_to_be_updated.lower()), None)
+    # Get the city name to be updated and remove extra spaces
+            city_name_to_be_updated = input("Enter the name of the city that needs to be updated: ").strip().lower()
             
+            # Find the city by looping through the cities list
+            city_to_update = None
+            for city in cities:
+                if city.name.lower() == city_name_to_be_updated:
+                    city_to_update = city
+                    break
+            
+            # Proceed if city is found
             if city_to_update:
+                # Get the new city name and population
                 new_name = input("Enter a new name: ")
+
+                # Validate population input
                 while True:
                     population_input = input("Enter the population: ")
                     try:
                         population = int(population_input)
                         break
                     except ValueError:
-                        print("Must be an integer")
-                update_city_by_number(cities, city_to_update.id, new_name, population)
-                print(f"You have updated {new_name}!")
+                        print("Population must be an integer.")
+                
+                # Update the city using its ID
+                update_city_by_name(cities, city_to_update.id, new_name, population)
+                print(f"You have successfully updated the city to {new_name}!")
             else:
                 print("City not found. Please try again.")
 
         elif user_action == "delete":
-            city_number_to_delete = input("Enter the number of the city you would like to delete: ")
+            cities = find_cities_by_state(state.id)
+            list_cities(cities)
+
+            city_number_to_delete =input("Enter the number of the city you would like to delete: ")
             if city_number_to_delete.isdigit():
                 city_number = int(city_number_to_delete)
                 if 1 <= city_number <= len(cities):
-                    delete_city_by_number(state.name, city_number)
+                    delete_city_by_number(cities, city_number)
                     print("City deleted successfully.")
                 else:
                     print("Invalid number, please try again.")
