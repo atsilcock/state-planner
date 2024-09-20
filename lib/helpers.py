@@ -34,4 +34,25 @@ def view_all_states():
     else:
         print("No states found.")
 
+# City operations
+def get_cities_by_state(state_id):
+    return City.find_by_state(state_id)
+
+def add_city(name, population, state_id):
+    city = City(name, population, state_id)
+    city.save()
+
+def delete_city(state_id, name):
+    city = next((c for c in City.find_by_state(state_id) if c.name.lower() == name.lower()), None)
+    if city:
+        city.delete()
+        print(f"City '{city.name}' deleted successfully.")
+    else:
+        print(f"City '{name}' not found.")
+
+def update_city(city, name, population):
+    city.name = name
+    city.city_population = population
+    city.update()
+
 
