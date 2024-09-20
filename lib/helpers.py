@@ -31,8 +31,16 @@ def display_states():
     else:
         print("No states available.")
 
-def display_state_details():
-    return City.get_all
+def display_state_details(state):
+    cities = find_cities_by_state(state.id) 
+    print(f"State Name: {state.name}")
+    if cities:
+        for city in cities:
+            print(f"- {city.name} (Population: {city.city_population})")
+    else:
+        print("No cities available for this state.")
+    
+    print("***********************")
 
 
 def get_cities():
@@ -78,23 +86,25 @@ def delete_city_by_number(cities, number):
     city_to_delete.delete()
     print(f"City '{city_to_delete.name}' has been deleted.")
 
-def update_city_by_number(cities, number, name, population):
-    city_to_update = cities[number - 1]
-    city_to_update.name = name
-    city_to_update.city_population = population
-    city_to_update.update()
-    print(f"City '{city_to_update.name}' has been updated.")
+def update_city_by_name(cities, id, name, population):
+    city_to_update = next((city for city in cities if city.id == id), None)
+    
+    if city_to_update:
+        city_to_update.name = name
+        city_to_update.city_population = population
+        city_to_update.update()  # Call the update method on the city object
+        print(f"City '{city_to_update.name}' has been updated.")
+    else:
+        print("City not found.")
 
-def update_state_by_name(states, name, new_name, population, region):
+def update_state_by_name(states, name, population):
     for state in states:
         if state.name.lower() == name.lower(): 
             updated_state = state
             break
 
     if updated_state:
-        updated_state.name = new_name
         updated_state.population = population
-        updated_state.region = region
         updated_state.update() #updating the database in our system
         print(f"State '{updated_state.name}' has been updated.")
         return updated_state 

@@ -11,7 +11,7 @@ from helpers import (
     find_cities_by_state,
     delete_state_by_number, 
     update_state_by_name,
-    update_city_by_number,
+    update_city_by_name,
     find_state,
     stars
 )
@@ -33,6 +33,15 @@ def select_state():
         if user_action == 'e':
             exit_program()
             break  
+
+        elif user_action.isdigit():
+            state_index = int(user_action)  # Convert input to integer
+            if 1 <= state_index <= len(states):  # Check if input is a valid state number
+                state_to_view = states[state_index - 1]  # Get the state by index
+                display_state_details(state_to_view)  # Display the details of the selected state
+                select_city(state_to_view)  # Allow further actions on the selected state
+            else:
+                print("Invalid state number, please try again.")
 
         elif user_action == "add":
             adding_a_state()
@@ -58,17 +67,15 @@ def select_state():
                 
 
             if state_to_update:
-                new_name = input ("Enter a new name: ")
                 while True:
-                    population_input = input ("Enter the population: ")
+                    population_input = input("Enter the population: ")
                     try:
                         population  = int(population_input)
                         break
                     except ValueError:
                         print("Must be a integer")
-            new_region = input("Enter the new region: ")
 
-            update_state = update_state_by_name(states, state_name_to_be_updated, new_name, population, new_region)
+            update_state = update_state_by_name(states, state_name_to_be_updated, population)
 
             print(f"You have updated {update_state.name}!")
    
@@ -86,12 +93,70 @@ def select_state():
             else:
                 print("Please enter a valid number.")
 
-       
-
 def select_city(state):
-    pass
+    while True:
+        cities = find_cities_by_state(state.name)
+        list_cities(cities)
 
+        user_action = city_menu()
+
+        if user_action == 'back':
+            break
+
+        elif user_action == "add":
+            adding_a_city()
+            name = input("Enter the city name: ")
+            while True:
+                population_input = input("Enter the population: ")
+                try:
+                    population = int(population_input)
+                    break
+                except ValueError:
+                    print("Error: Population must be an integer. Please try again.")
+
+            new_city = add_city(state.name, name, population)
+            print(f"You have now added the city {new_city.name} successfully ")
+
+        elif user_action == "update":
+            city_name_to_be_updated = input("Enter the name of the city that needs to be updated: ")
+            city_to_update = next((city for city in cities if city.name.lower() == city_name_to_be_updated.lower()), None)
             
+            if city_to_update:
+                new_name = input("Enter a new name: ")
+                while True:
+                    population_input = input("Enter the population: ")
+                    try:
+                        population = int(population_input)
+                        break
+                    except ValueError:
+                        print("Must be an integer")
+                update_city_by_number(cities, city_to_update.id, new_name, population)
+                print(f"You have updated {new_name}!")
+            else:
+                print("City not found. Please try again.")
+
+        elif user_action == "delete":
+            city_number_to_delete = input("Enter the number of the city you would like to delete: ")
+            if city_number_to_delete.isdigit():
+                city_number = int(city_number_to_delete)
+                if 1 <= city_number <= len(cities):
+                    delete_city_by_number(state.name, city_number)
+                    print("City deleted successfully.")
+                else:
+                    print("Invalid number, please try again.")
+            else:
+                print("Please enter a valid number.")
+
+
+
+
+
+
+
+
+
+
+
 def select_state_menu():
 
     print("")
@@ -125,8 +190,8 @@ def adding_a_city():
     print("")
 
 def city_menu():
-    print("\nCity Options")
-    stars()
+    print("\nCity Menu Options: ")
+    print(">>")
     print("Type 'Update' to update a city")
     print("Type 'Add' to add a city.")
     print("Type 'Delete' to delete a city")
