@@ -65,15 +65,11 @@ def handle_select_state_by_name():
         print(f"State '{name}' not found.")
 
 def manage_cities(state):
-    while True:
-        print(f"\n--- Managing Cities for {state.name} ---")
-        print("1. View All Cities")
-        print("2. Add City")
-        print("3. Delete City")
-        print("4. Update City")
-        print("5. Go Back")
-        
-        choice = input("Enter your choice: ").strip()
+    city_menu( )
+    
+    while True: 
+        print(f"\n--- What would you like to do for {state.name}? ---")
+        choice = input("Enter your choice: ")
         
         if choice == '1':
             view_all_cities(state)
@@ -119,13 +115,29 @@ def handle_update_city(state):
 
 
 def main_menu():
-    print("\n--- Main Menu ---")
+    print("\n------ State Planner -------")
+    print("Welcome to your State Planner!")
+    print("")
+    stars()
+    print("")
     print("1. View All States")
     print("2. Add State")
     print("3. Delete State")
     print("4. Update State")
     print("5. Select State by Name")
     print("6. Exit")
+    print()
+    stars()
+
+def city_menu():
+    print("1. View All Cities")
+    print("2. Add City")
+    print("3. Delete City")
+    print("4. Update City")
+    print("5. Go Back")
+
+def stars():
+    print("*********************")
 
 if __name__ == "__main__":
     main()
