@@ -10,8 +10,8 @@ from helpers import (
     delete_city_by_number, 
     find_cities_by_state,
     delete_state_by_number, 
-    update_state,
-    update_city,
+    update_state_by_name,
+    update_city_by_number,
     find_state,
     stars
 )
@@ -48,6 +48,21 @@ def select_state():
             region = input("Enter the region: ")
             new_state = add_state(name, population, region) 
             print(f"You have now added the state {new_state.name} successfully ")
+
+        elif user_action == "update":
+            state_name_to_be_updated: input = ("Enter the state that needs to be updated: ")
+
+            name = input("Enter the State Name: ")
+            while True:
+                population_input = input("Enter the population: ")
+                try:
+                    population = int(population_input)
+                    break
+                except ValueError:
+                    print("Error: Population must be an integer. Please try again.")
+            region = input("Enter the region: ")
+            updated_state = update_state_by_name(name, population, region)
+            print(f"You now updated {updated_state.name}")
         
         elif user_action == "delete":
             states = get_states()
@@ -63,44 +78,7 @@ def select_state():
             else:
                 print("Please enter a valid number.")
 
-        elif user_action == "update":
-            state = get_states()
-            list_states(states)
-            state_to_be_updated = input("Enter the number that you would like to update")
-            
-            if state_to_be_updated.isdigit():
-                state_id = int(state_to_be_updated)
-                if 1<= state_id <= len(states):
-                    name = input("Enter a name: ")
-                    while True:
-                        population = input("Enter the population: ")
-
-                        if population.isdigit():  # Check if the input is a valid integer
-                            population = int(population)  # Convert to an integer
-                            break  # Exit the loop once we have valid input
-                        else:
-                            print("Error: Population must be an integer. Please try again.")
-
-                    region = input("Enter region: ")
-                    update_state(state_id, name, population, region)
-                    print(f"State {name} has been sucessfully updated")
-                else:
-                    print("invalid state number")
-            else:
-                print("Please enter a valid number")
-
-        elif user_action.isdigit(): #view state details
-            state = find_state(int(user_action))
-            if state:
-                print(f"\nSelected State: {state.name}")
-                print(f"Population: {state.population}")
-                print(f"Region: {state.region}")
-                select_city(state)  # Go to city-specific menu for the selected state
-            else:
-                print("Entered number you have entered does not match a state.")
-
-        else:
-            print("Invalid choice, please try again.")
+       
 
 def select_city(state):
     while True:
@@ -144,13 +122,36 @@ def select_city(state):
                 print("Invalid number, please try again.")
         
         elif user_action == "update":
-            pass
+            cities = find_cities_by_state(state.id)
+            list_cities(cities)
+            
+            user_input = input("Enter the number of the city you would like to update: ")
+
+            if user_input.isdigit():
+                city_to_be_updated = int(user_input) - 1
+                if 0 <= city_to_be_updated < len(cities):
+                    city_id = cities[city_to_be_updated].id
+                    name = input("Enter the city name: ")
+
+                    while True:
+                        population_input = input("Enter the population: ")
+                        try:
+                            population = int(population_input)
+                            break
+                        except ValueError:
+                            print("Error: Population must be an integer. Please try again.")
+
+                    update_city(city_id, name, population)
+                    print(f"City {name} has been successfully updated.")
+                else:
+                    print("Invalid city number.")
+            else:
+                print("Please enter a valid number.")
 
         elif user_action == "back":
             print("Go back")
             return
 
-        
         else:
             print("Please enter a valid number.")
 
@@ -173,6 +174,13 @@ def adding_a_state():
     stars()
     print("\nEnter the details below to add a new State: ")
     print("")
+
+def updating_a_state():
+    print("")
+    stars()
+    print("\nEnter the details below to update a State: ")
+    print("")
+
 
 def adding_a_city():
     print("")

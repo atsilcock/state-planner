@@ -76,6 +76,29 @@ def delete_city_by_number(cities, number):
     city_to_delete = cities[number - 1]
     city_to_delete.delete()
     print(f"City '{city_to_delete.name}' has been deleted.")
+
+def update_city_by_number(cities, number, name, population):
+    city_to_update = cities[number - 1]
+    city_to_update.name = name
+    city_to_update.city_population = population
+    city_to_update.update()
+    print(f"City '{city_to_update.name}' has been updated.")
+
+def update_state_by_name(states, name, new_name, population, region):
+    state_to_update = None
+    for state in states:
+        if state.name == name:
+            state_to_update = state
+            break
+
+    if state_to_update:
+        state_to_update.name = new_name
+        state_to_update.population = population
+        state_to_update.region = region
+        state_to_update.update()
+        print(f"State '{state_to_update.name}' has been updated.")
+    else:
+        print(f"State with name '{name}' was not found.")
            
 
 def update_city(id, name, population):
@@ -84,6 +107,8 @@ def update_city(id, name, population):
         city.name = name
         city.city_population = population
         city.update()
+    else:
+        print("City was not found")
 
 
 def find_city(state_id):
