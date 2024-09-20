@@ -59,10 +59,11 @@ def update_state(id, name, population, region):
     else:
         print("State was not found")
 
-def find_state(id):
+
+def find_state(name):
     states = get_states()
     for state in states:
-        if state.id == id:
+        if state.name.lower() == name.lower():  # Case-insensitive match
             return state
     return None
 
@@ -85,21 +86,19 @@ def update_city_by_number(cities, number, name, population):
     print(f"City '{city_to_update.name}' has been updated.")
 
 def update_state_by_name(states, name, new_name, population, region):
-    state_to_update = None
     for state in states:
-        if state.name == name:
-            state_to_update = state
+        if state.name.lower() == name.lower(): 
+            updated_state = state
             break
 
-    if state_to_update:
-        state_to_update.name = new_name
-        state_to_update.population = population
-        state_to_update.region = region
-        state_to_update.update()
-        print(f"State '{state_to_update.name}' has been updated.")
-    else:
-        print(f"State with name '{name}' was not found.")
-           
+    if updated_state:
+        updated_state.name = new_name
+        updated_state.population = population
+        updated_state.region = region
+        updated_state.update() #updating the database in our system
+        print(f"State '{updated_state.name}' has been updated.")
+        return updated_state 
+    return None           
 
 def update_city(id, name, population):
     city = find_city(id)

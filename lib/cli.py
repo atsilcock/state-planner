@@ -50,20 +50,28 @@ def select_state():
             print(f"You have now added the state {new_state.name} successfully ")
 
         elif user_action == "update":
-            state_name_to_be_updated: input = ("Enter the state that needs to be updated: ")
+            state_name_to_be_updated = input ("Enter the state that needs to be updated: ")
+            state_to_update = find_state(state_name_to_be_updated)
 
-            name = input("Enter the State Name: ")
-            while True:
-                population_input = input("Enter the population: ")
-                try:
-                    population = int(population_input)
-                    break
-                except ValueError:
-                    print("Error: Population must be an integer. Please try again.")
-            region = input("Enter the region: ")
-            updated_state = update_state_by_name(name, population, region)
-            print(f"You now updated {updated_state.name}")
-        
+            if not state_to_update:
+                print("State not found. Please try again.")
+                
+
+            if state_to_update:
+                new_name = input ("Enter a new name: ")
+                while True:
+                    population_input = input ("Enter the population: ")
+                    try:
+                        population  = int(population_input)
+                        break
+                    except ValueError:
+                        print("Must be a integer")
+            new_region = input("Enter the new region: ")
+
+            update_state = update_state_by_name(states, state_name_to_be_updated, new_name, population, new_region)
+
+            print(f"You have updated {update_state.name}!")
+   
         elif user_action == "delete":
             states = get_states()
             list_states(states)
@@ -81,79 +89,7 @@ def select_state():
        
 
 def select_city(state):
-    while True:
-        cities = find_cities_by_state(state.id)  # Use the helper function
-        print(f"\nCities in {state.name}:")
-        print("")
-        if cities:
-            list_cities(cities)  # Display the cities
-        else:
-            print("No cities found for this state.")
-        user_action = city_menu()
-       
-        if user_action == 'e':
-            break
-        
-        elif user_action == "add":
-            adding_a_city()
-            name = input("Enter the city name: ")
-            population = input("Enter the population: ")
-            try:
-                population = int(population)
-            except ValueError:
-                print("Error: You must type a number! ")
-                continue
-
-            new_city = add_city(name, population, state.id) 
-            print(f"You have now added the state {new_city.name} successfully ")
-    
-        elif user_action == "delete":
-            cities = find_cities_by_state(state.id)
-            list_cities(cities)  
-            delete_city_by_number_input = input("Enter the number of the city you would like to delete: ")
-
-            if delete_city_by_number_input.isdigit():
-                delete_number = int(delete_city_by_number_input)
-            if 1 <= delete_number <= len(cities):
-                city_to_delete = cities[delete_number - 1]  # Get the city object to delete
-                delete_city_by_number(cities, delete_number)  # Delete the city based on its ID
-                print(f"City {city_to_delete.name} has been successfully deleted.")
-            else:
-                print("Invalid number, please try again.")
-        
-        elif user_action == "update":
-            cities = find_cities_by_state(state.id)
-            list_cities(cities)
-            
-            user_input = input("Enter the number of the city you would like to update: ")
-
-            if user_input.isdigit():
-                city_to_be_updated = int(user_input) - 1
-                if 0 <= city_to_be_updated < len(cities):
-                    city_id = cities[city_to_be_updated].id
-                    name = input("Enter the city name: ")
-
-                    while True:
-                        population_input = input("Enter the population: ")
-                        try:
-                            population = int(population_input)
-                            break
-                        except ValueError:
-                            print("Error: Population must be an integer. Please try again.")
-
-                    update_city(city_id, name, population)
-                    print(f"City {name} has been successfully updated.")
-                else:
-                    print("Invalid city number.")
-            else:
-                print("Please enter a valid number.")
-
-        elif user_action == "back":
-            print("Go back")
-            return
-
-        else:
-            print("Please enter a valid number.")
+    pass
 
             
 def select_state_menu():
