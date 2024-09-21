@@ -65,6 +65,7 @@ def handle_city_menu(state_id):
         elif choice == "3":
             add_a_city("name", "population", "region")
         elif choice == "4":
+            print("----------Main Menu----------")
             return
         else:
             print("Invalid choice")
