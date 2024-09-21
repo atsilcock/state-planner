@@ -25,11 +25,11 @@ def main():
         if choice == "1":
             view_all_states()
         elif choice == "2":
-            add_a_state()
+            add_a_state("name", "population", "region")
         elif choice == "3":
             delete_a_state()
         elif choice == "4":
-            update_a_state()
+            update_a_state("name", "population", "region")
         elif choice == "5":
             try:
                 stars()
@@ -59,9 +59,11 @@ def handle_city_menu(state_id):
     
     try:  
         if choice == "1":
-            update_a_city("state_id")
+            update_a_city(state_id)
+            break
         if choice == "2":
-            delete_a_city()
+            delete_a_city(state_id)
+            break
         elif choice == "3":
             add_a_city("name", "population", "region")
         elif choice == "4":
