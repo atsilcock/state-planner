@@ -1,6 +1,8 @@
 from models.state import State
 from models.city import City
 
+#State functions
+
 def view_all_states():
     all_states = State.get_all()
     for i, state in enumerate(all_states, start=1):
@@ -29,18 +31,15 @@ def delete_a_state(name):
 
     try:
         delete_state = int(input("Please enter the state # that you would like to delete: "))
+        if 1<= delete_state <= len(all_states):
+            selected_state = all_states[delete_state -1]
+            selected_state.delete()
+            print(f"The state of {selected_state.name} has been deleted")
+        else:
+            print(" Please try again")
     except ValueError: 
         print("Invalid selection. Please try again.")
-        return
-
-    state_by_name = all_states[delete_state -1]
-
-    if state_by_name:
-        state_by_name.delete()
-        print(f"The {name} has been deleted")
-    else:
-        print("State not found")
-
+        
 def update_a_state(name, region, population):
     all_states = State.get_all()
     view_all_states()
@@ -71,18 +70,27 @@ def update_a_state(name, region, population):
     else:
         print("State not found. Try again.")
 
-def get_cities_by_state(state_id):
-    all_states = State.get_all()
-    view_all_states()
-    try:
-        select_state_to_view_cities = int(input("Choose the state which you would like to view the cities for: "))
-    except ValueError:
-        print("Invalid input. Please try again.")
-        return
+#Cities functions
 
-    all_cities = City.get_cities_by_state(select_state_to_view_cities)
+def get_cities_by_state(state_id):
+    all_cities = City.find_by_state(state_id)
+    
     if all_cities:
+        print("")
+        print(f"Cities: ")
         for i, city in enumerate(all_cities, start=1):
+            print("")
             print(f"{i}. {city.name} | Population: {city.city_population}")
+            print("")
     else:
         print(f"No cities found for this state.")
+
+def add_a_city():
+    pass
+
+def delete_a_city():
+    pass
+
+def update_a_city():
+    pass
+
