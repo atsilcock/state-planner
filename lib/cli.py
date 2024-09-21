@@ -16,6 +16,9 @@ from helpers import (
 def main(): 
     while True:
         print("")
+        view_all_states()
+        print("")
+        print("")
         main_menu()
         print("")
         
@@ -27,9 +30,9 @@ def main():
         elif choice == "2":
             add_a_state("name", "population", "region")
         elif choice == "3":
-            delete_a_state()
+            delete_a_state("name")
         elif choice == "4":
-            update_a_state("name", "population", "region")
+            update_a_state("population")
         elif choice == "5":
             try:
                 stars()
@@ -60,12 +63,13 @@ def handle_city_menu(state_id):
     try:  
         if choice == "1":
             update_a_city(state_id)
-            break
+            return
         if choice == "2":
             delete_a_city(state_id)
             break
         elif choice == "3":
-            add_a_city("name", "population", "region")
+            add_a_city(state_id)
+            break
         elif choice == "4":
             print("----------Main Menu----------")
             return

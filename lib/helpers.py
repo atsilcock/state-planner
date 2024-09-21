@@ -23,7 +23,7 @@ def add_a_state(name, population, region):
 
     state_instance = State(name, population, region)
     state_instance.save()
-    print(f"State {name} has now been saved")
+    print(f"State {name} has now been added to the State list")
 
 def delete_a_state(name):
     all_states = State.get_all()
@@ -40,7 +40,7 @@ def delete_a_state(name):
     except ValueError: 
         print("Invalid selection. Please try again.")
         
-def update_a_state(name, region, population):
+def update_a_state(population):
     all_states = State.get_all()
     view_all_states()
 
@@ -53,17 +53,12 @@ def update_a_state(name, region, population):
     selected_state = all_states[update_state - 1]
 
     if selected_state:
-        name = input(f"Please enter the updated name: ")
-        region = input(f"Please enter the updated region: ")
-
         try:
             population = int(input("Please enter the updated population: "))
         except ValueError:
             print("Population must be a number")
             return
 
-        selected_state.name = name
-        selected_state.region = region
         selected_state.population = population
         selected_state.update()
 
@@ -90,13 +85,22 @@ def get_cities_by_state(state_id):
     else:
         print(f"No cities found for this state.")
 
-def add_a_city():
-    pass
+def add_a_city(state_id):
+    name = input("Please enter name of city: ")
+    try:
+        city_population = int(input("Please enter the population: "))
+    except ValueError:
+        print("must be a number")
+        return 
+    
+    city_instance = City(name=name, city_population=city_population, state_id=state_id)
+    city_instance.save()
+    print(f"City {name} has now been added to the City list")
 
 def delete_a_city(state_id):
     all_cites = view_all_cities_by_state(state_id)
     try:
-        delete_city = int(input("Select number to delete"))
+        delete_city = int(input("Select number to delete: "))
         selected_city = all_cites[delete_city - 1]
         selected_city.delete()
         print(f"City {selected_city.name} has been deleted")
