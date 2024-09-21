@@ -117,16 +117,11 @@ def update_a_city(state_id):
     except ValueError:
         print("Invalid selection. Please try again.")
         return
-
-    update_name = input(f"Please enter the updated name for {selected_city.name}: ")
-
     try:
         update_population = int(input(f"Please enter the updated population for {selected_city.name}: "))
     except ValueError:
         print("Population must be a number.")
         
-
-    selected_city.name = update_name
     selected_city.city_population = update_population
     selected_city.update()
 

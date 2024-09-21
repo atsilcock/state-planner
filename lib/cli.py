@@ -93,6 +93,7 @@ def main_menu():
     print("3. Delete a state")
     print("4. Update a state")
     print("5. Select State to view its cities")
+    print("To exit press (e)")
     stars()
 
 def city_menu():
