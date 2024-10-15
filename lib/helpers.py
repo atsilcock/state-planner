@@ -1,6 +1,10 @@
 from models.state import State
 from models.city import City
 
+name = "Alin"
+
+print(f"{name}")
+
 #State functions
 
 def view_all_states():
@@ -66,6 +70,7 @@ def update_a_state(population):
         print("State not found. Try again.")
 
 #Cities functions
+
 def view_all_cities_by_state(state_id):
     all_cities = City.find_by_state(state_id)
     for i, city in enumerate(all_cities, start=1):

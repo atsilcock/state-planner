@@ -36,13 +36,16 @@ class City:
     @property
     def state_id(self):
         return self._state_id
-
+ 
     @state_id.setter
     def state_id(self, state_id):
         if isinstance(state_id, int) and State.find_by_id(state_id):
             self._state_id = state_id
         else:
-            raise ValueError("state_id must reference a valid state in the database")
+            raise ValueError("state_id must reference a reference in the database")
+
+
+           
             
     @classmethod
     def create_table(cls):

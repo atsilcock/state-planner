@@ -1,6 +1,3 @@
-from models.city import City
-from models.state import State
-
 from helpers import (
     view_all_states, 
     add_a_state, 
@@ -57,7 +54,7 @@ def handle_city_menu(state_id):
     print("")
     city_menu()
     print("")
-    choice = input("Enter your choice: ")
+    choice = input("What would you like to do - select a number:  ")
     print("")
     
     try:  
@@ -87,6 +84,7 @@ def exit_program():
     print("You are now leaving - Goodbye!")
 
 def main_menu():
+    print("-----------States Menu-----------")
     stars()
     print("1. View all states")
     print("2. Add a state")
@@ -109,3 +107,5 @@ def stars():
 
 if __name__ == "__main__":
     main()
+
+
